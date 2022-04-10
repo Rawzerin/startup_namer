@@ -74,17 +74,6 @@ class MyApp extends StatelessWidget {
 
           ),
         );
-        drawer: Drawer(
-          child: ListView(
-            children: [
-
-              DrawerHeader(
-                  child: Text('DrawerHeader'))
-            ],
-          ),
-        ),
-      );
-    );
   }
 }
 
