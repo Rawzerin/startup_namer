@@ -2,8 +2,12 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+
+import 'contact_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,10 +22,16 @@ class MyApp extends StatelessWidget {
 
     return MaterialApp(
 
+
       title: 'Welcome to Flutter',
 
-      home: Scaffold(
 
+      home: Scaffold(
+        body: const Center(
+          child: ExampleParallax(),
+
+        ),
+        drawer: NavigationDrawerWidget(),
 
         bottomNavigationBar: BottomNavigationBar(
           items: [
@@ -50,31 +60,93 @@ class MyApp extends StatelessWidget {
 
         ),
 
-        floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.account_balance),
-          onPressed: () {},
-        ),
+        // floatingActionButton: FloatingActionButton(
+        //   child: Icon(Icons.account_balance),
+        //   onPressed: () {},
+        // ),
         appBar: AppBar(
           title: const Text('Welcome to Flutter'),
+
+
         ),
-        backgroundColor: Colors.blue[100],
 
-       body: const Center(
-          //child: Text(
-           //'Hello World',
-           // style: TextStyle(
-            // color: Colors.teal,
-             // fontSize: 40.0,
-             // fontStyle: FontStyle.italic,
-             // fontWeight: FontWeight.bold,
-         child: ExampleParallax(),
+        //backgroundColor: Colors.blue[100],
 
-            ),
+        // body: const Center(
+        //    //child: Text(
+        //     //'Hello World',
+        //     // style: TextStyle(
+        //      // color: Colors.teal,
+        //       // fontSize: 40.0,
+        //       // fontStyle: FontStyle.italic,
+        //       // fontWeight: FontWeight.bold,
+        //   child: ExampleParallax(),
+        //
+        //      ),
 
 
-          ),
-        );
+      ),
+    );
   }
+}
+
+class NavigationDrawerWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+        child: Material(
+          color: Colors.blue[600],
+          child: ListView(
+            children: <Widget> [
+              const SizedBox(height:48),
+              buildMenuItem(
+                text: 'Contact Information ',
+                icon: Icons.contacts,
+                onClicked:() => selectedItem(context,0),
+              ),
+              const SizedBox(height:20),
+              buildMenuItem(
+                text: 'favorites',
+                icon: Icons.favorite_border,
+              )
+
+
+            ],
+          ),
+        )
+    );
+
+
+  }
+
+  Widget buildMenuItem(
+  {
+    required String text,
+    required IconData icon,
+    VoidCallback? onClicked,
+  }) {
+    final color = Colors.white;
+    return ListTile(
+      leading: Icon(icon,color: color),
+      title: Text(text,style: TextStyle(color: color)),
+      onTap:onClicked,
+    );
+  }
+
+ selectedItem(BuildContext context, int index) {
+    switch(index){
+      case 0:
+        Navigator.of(context).push(MaterialPageRoute(
+            builder:(context) => ContactPage (),
+        ));
+    }
+  }
+
+}
+
+
+
+class voidCallback {
 }
 
 /////////////////////////////////////////////class2///////////////////////////////////////////////////
@@ -100,6 +172,7 @@ class ExampleParallax extends StatelessWidget {
   }
 }
 
+@immutable
 class LocationListItem extends StatelessWidget {
   LocationListItem({
     Key? key,
@@ -245,7 +318,9 @@ class ParallaxFlowDelegate extends FlowDelegate {
     context.paintChild(
       0,
       transform:
-      Transform.translate(offset: Offset(0.0, childRect.top)).transform,
+      Transform
+          .translate(offset: Offset(0.0, childRect.top))
+          .transform,
     );
   }
 
@@ -269,8 +344,8 @@ class Parallax extends SingleChildRenderObjectWidget {
   }
 
   @override
-  void updateRenderObject(
-      BuildContext context, covariant RenderParallax renderObject) {
+  void updateRenderObject(BuildContext context,
+      covariant RenderParallax renderObject) {
     renderObject.scrollable = Scrollable.of(context)!;
   }
 }
@@ -382,6 +457,7 @@ class Location {
 }
 
 const urlPrefix =
+
     'https://docs.flutter.dev/cookbook/img-files/effects/parallax';
 const locations = [
   Location(
